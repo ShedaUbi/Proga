@@ -42,6 +42,7 @@ void do_tests()
 void input_output_check()
 {
 	Matrix* test_matrix = new Matrix(2, 3);
+	cout << "Current created matrix objects: " << Matrix::get_count() << endl;
 	cout << "Enter coefficients of 2x3 matrix:" << endl;
 	test_matrix->input_coeffs();
 	test_matrix->print();

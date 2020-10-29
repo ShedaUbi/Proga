@@ -4,9 +4,13 @@
 #include <cstring>
 //#include <stdlib.h> //for itoa
 
+int Matrix::count = 0;
+
 // Конструктор по умолчанию
 Matrix::Matrix() 
 { 
+	count++; 
+
 	height = 1;
 	width = 1;
 	
@@ -17,6 +21,8 @@ Matrix::Matrix()
 // Конструктор с параметрами
 Matrix::Matrix(int new_width, int new_height)
 { 
+	count++; 
+
 	height = new_height;
 	width = new_width;
 
@@ -29,6 +35,8 @@ Matrix::Matrix(int new_width, int new_height)
 // Конструктор с параметрами
 Matrix::Matrix(int new_width, int new_height, int* coefs)
 { 
+	count++; 
+
 	height = new_height;
 	width = new_width;
 
@@ -41,8 +49,18 @@ Matrix::Matrix(int new_width, int new_height, int* coefs)
 // Деструктор
 Matrix::~Matrix()
 {
+	count--; 
 	delete[] coef;
 }
+
+
+// int Matrix::get_count()
+// Возвращает количество обьектов-матриц
+// return - кол-во созданных обьектов-матриц, int
+int Matrix::get_count() {
+	return count;
+}
+
 
 // int Matrix.get_w()
 // Возвращает ширину матрицы

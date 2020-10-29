@@ -1,7 +1,11 @@
 #pragma once
 
 class Matrix {
+	static int count;
+
 public:
+	static int get_count();
+
 	Matrix(); 
 	Matrix(int new_width, int new_height); 
 	Matrix(int new_width, int new_height, int* coefs); 
