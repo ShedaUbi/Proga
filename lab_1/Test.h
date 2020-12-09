@@ -1,15 +1,18 @@
 #pragma once
 #include "Matrix.h"
 
-struct Test { 
+struct Test {
 	Test();
 
 	Matrix* test_get_test_matrix();
-	
-	bool test_change_coeff();
-	bool test_change_coeff_invalid_pos();
-	bool test_find_existing_coeff();
-	bool test_find_nonexisting_coeff();
-	bool test_sort_lines();
-	bool test_sort_columns();
+
+	bool test_saveload_operators();
+	bool test_saveload_bin_operators();
+
+	bool test_identity_matrix();
+	bool test_triangle_matrix();
+
+	bool test_try_constructor();
+	bool test_try_get_coef();
+	bool test_try_set_coef();
 };

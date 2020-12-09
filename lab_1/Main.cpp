@@ -1,4 +1,3 @@
-#include "Matrix.h"
 #include "Test.h"
 #include <iostream>
 
@@ -7,50 +6,50 @@ using namespace std;
 void do_tests()
 {
 	Test test;
-	
-	if(test.test_change_coeff())
-		cout << "Change coefficient test: True" << endl;
-	else
-		cout << "Change coefficient test: False" << endl;
-	
-	if(test.test_change_coeff_invalid_pos())
-		cout << "Change coefficient in invalid position test: True" << endl;
-	else
-		cout << "Change coefficient in invalid position test: False" << endl;
-	
-	if(test.test_find_existing_coeff())
-		cout << "Find existing coefficient test: True" << endl;
-	else
-		cout << "Find existing coefficient test: False" << endl;
-	
-	if(test.test_find_nonexisting_coeff())
-		cout << "Find non-existing coefficient test: True" << endl;
-	else
-		cout << "Find non-existing coefficient test: False" << endl;
-	
-	if(test.test_sort_lines())
-		cout << "Sort lines test: True" << endl;
-	else
-		cout << "Sort lines test: False" << endl;
 
-	if(test.test_sort_columns())
-		cout << "Sort columns test: True" << endl;
+	if (test.test_saveload_operators())
+		cout << "Save/load operators test: True" << endl;
 	else
-		cout << "Sort columns test: False" << endl;
+		cout << "Save/load operators test: False" << endl;
+
+	if (test.test_saveload_bin_operators())
+		cout << "Save/load binary operators test: True" << endl;
+	else
+		cout << "Save/load binary operators test: False" << endl;
+
+	cout << endl;
+
+	if (test.test_identity_matrix())
+		cout << "Identity matrix test: True" << endl;
+	else
+		cout << "Identity matrix test: False" << endl;
+
+	if (test.test_triangle_matrix())
+		cout << "Triangle matrix test: True" << endl;
+	else
+		cout << "Triangle matrix test: False" << endl;
+
+	cout << endl;
+
+	if (test.test_try_constructor())
+		cout << "Try-catch constructor test: True" << endl << endl;
+	else
+		cout << "Try-catch constructor test: False" << endl << endl;
+
+	if (test.test_try_get_coef())
+		cout << "Try-catch get coefficent test: True" << endl << endl;
+	else
+		cout << "Try-catch get coefficent test: False" << endl << endl;
+
+	if (test.test_try_set_coef())
+		cout << "Try-catch set coefficent test: True" << endl << endl;
+	else
+		cout << "Try-catch set coefficent test: False" << endl << endl;
 }
 
-void input_output_check()
+int main() 
 {
-	Matrix* test_matrix = new Matrix(2, 3);
-	cout << "Current created matrix objects: " << Matrix::get_count() << endl;
-	cout << "Enter coefficients of 2x3 matrix:" << endl;
-	test_matrix->input_coeffs();
-	test_matrix->print();
-}
-
-int main() {
 	do_tests();
-	input_output_check();
-
 	cin.get();
+
 }
