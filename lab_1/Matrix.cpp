@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <cstring>
+#include <sstream>
 
 int Matrix::count = 0;
 
@@ -24,7 +25,7 @@ Matrix::Matrix(int new_width, int new_height)
 	try
 	{	
 		if (new_width <= 0 || new_height <= 0) 
-			throw -1;
+			throw std::runtime_error("Invalid matrix size");
 
 		count++;
 
@@ -36,9 +37,9 @@ Matrix::Matrix(int new_width, int new_height)
 		for (int i = 0; i < width * height; i++)
 			coef[i] = 0;
 	}
-	catch(int e)
+	catch(const std::exception& e)
 	{
-		std::cout << "Error: Invalid matrix size!" << std::endl;
+		std::cout << "Error: " << e.what() << std::endl;
 	}
 }
 
@@ -47,8 +48,8 @@ Matrix::Matrix(int new_width, int new_height, int* coefs)
 {	
 	try
 	{
-		if (new_width <= 0 || new_height <= 0) 
-			throw -1;
+		if (new_width <= 0 || new_height <= 0)
+			throw std::runtime_error("Invalid matrix size");
 
 		count++;
 
@@ -60,14 +61,14 @@ Matrix::Matrix(int new_width, int new_height, int* coefs)
 		for (int i = 0; i < width * height; i++)
 		{
 			if (!coefs[i])
-				throw -2;
+				throw std::runtime_error("Invalid input coefficents");
 			else
 				coef[i] = coefs[i];
 		}
 	}
-	catch (int e)
+	catch (const std::exception& e)
 	{
-		std::cout << (e == -1 ? "Error: Invalid matrix size!" : "Error: Invalid input coefficents!") << std::endl;
+		std::cout << "Error: " << e.what() << std::endl;
 	}
 }
 
@@ -86,93 +87,6 @@ int Matrix::get_count()
 {
 	return count;
 }
-
-// void Matrix::clear_file()
-// Очищает файл сохранения
-// return - void
-void Matrix::clear_file() 
-{
-	std::ofstream ofs("cache.txt", std::ios::out);
-
-	if (!ofs) 
-		std::cerr << "Error: unable to write to cache.txt" << std::endl;
-
-	else
-	{
-		ofs << "";
-		ofs.close();
-	}
-}
-
-// void Matrix::clear_bin_file()
-// Очищает бинарный файл сохранения
-// return - void
-void Matrix::clear_bin_file()
-{
-	std::ofstream ofs("cache.dat", std::ios::binary | std::ios::out);
-
-	if (!ofs) 
-		std::cerr << "Error: unable to write to cache.dat" << std::endl;
-
-	else
-	{
-		ofs << "";
-		ofs.close();
-	}
-}
-
-// ofstream Matrix::open_file_save()
-// Открывает файл сохранения для записи в конец
-// return - ofstream
-std::ofstream Matrix::open_file_save()
-{
-	std::ofstream ofs("cache.txt", std::ios::app);
-
-	if (!ofs) 
-		std::cerr << "Error: unable to write to cache.txt" << std::endl;
-	
-	return ofs;
-}
-
-// ifstream Matrix::open_file_load()
-// Открывает файл сохранения для загрузки объектов
-// return - ifstream
-std::ifstream Matrix::open_file_load() 
-{
-	std::ifstream ifs("cache.txt", std::ios::in);
-
-	if (!ifs)
-		std::cerr << "Error: unable to read from cache.txt" << std::endl;
-	
-	return ifs;
-}
-
-// ofstream Matrix::open_file_save_bin()
-// Открывает бинарный файл сохранения для записи в конец
-// return - ofstream
-std::ofstream Matrix::open_file_save_bin()
-{
-	std::ofstream ofs("cache.dat", std::ios::binary | std::ios::app);
-
-	if (!ofs) 
-		std::cerr << "Error: unable to write to cache.dat" << std::endl;
-	
-	return ofs;
-}
-
-// ifstream Matrix::open_file_load_bin()
-// Открывает бинарный файл сохранения для загрузки объектов
-// return - ifstream
-std::ifstream Matrix::open_file_load_bin()
-{
-	std::ifstream ifs("cache.dat", std::ios::binary | std::ios::in);
-
-	if (!ifs)
-		std::cerr << "Error: unable to read from cache.dat" << std::endl;
-	
-	return ifs;
-}
-
 
 // int Matrix.get_w()
 // Возвращает ширину матрицы
@@ -214,13 +128,13 @@ int Matrix::get_coef(int x, int y)
 {
 	try {
 		if (x < 0 || x > width - 1 || y < 0 || y > height - 1)
-			throw -1;
+			throw std::runtime_error("Invalid coefficent coordinates");
 
 		return coef[y * width + x];
 	}
-	catch (int e)
+	catch (const std::exception& e)
 	{
-		std::cout << "Error: Invalid coefficent coordinates!" << std::endl;
+		std::cout << "Error: " << e.what() << std::endl;
 		return -1;
 	}
 }
@@ -236,14 +150,14 @@ bool Matrix::change_coeff(int x, int y, int new_coef)
 {
 	try {
 		if (x < 0 || x > width - 1 || y < 0 || y > height - 1)
-			throw -1;
+			throw std::runtime_error("Invalid coefficent coordinates");
 
 		coef[y * width + x] = new_coef;
 		return true;
 	}
-	catch (int e)
+	catch (const std::exception& e)
 	{
-		std::cout << "Error: Invalid coefficent coordinates!" << std::endl;
+		std::cout << "Error: " << e.what() << std::endl;
 		return false;
 	}
 }
@@ -324,6 +238,7 @@ void Matrix::sort_lines()
 
 // void Matrix.print() 
 // Вывод матрицы в консоль
+/*
 void Matrix::print()
 {
 	std::cout << "Matrix " << width << "x" << height << ":" << std::endl;
@@ -335,6 +250,16 @@ void Matrix::print()
 
 		std::cout << std::endl;
 	}
+}
+*/
+
+// string Matrix.to_string()
+// Строковое представвление матрицы
+std::string Matrix::to_string()
+{
+	std::ostringstream out;
+	out << "Matrix: " << width << "x" << height;
+	return out.str();
 }
 
 // Matrix* Matrix::operator+(Matrix b)
@@ -444,7 +369,7 @@ std::istream& operator>>(std::istream& is, Matrix& p)
 }
 
 // std::ofstream& operator<<(std::ofstream& os, Matrix& p) 
-// Перегрузка оператора записи из файлового потока
+// Перегрузка оператора записи в файловый поток
 std::ofstream& operator<<(std::ofstream& os, Matrix& p) 
 {
 	os << p.get_w() << ' ' << p.get_h() << ' ';
@@ -457,10 +382,13 @@ std::ofstream& operator<<(std::ofstream& os, Matrix& p)
 }
 
 // std::ifstream& operator>>(std::ifstream& is, Matrix& p)
-// Перегрузка оператора записи в файловый поток
+// Перегрузка оператора записи из файлового потока
 std::ifstream& operator>>(std::ifstream& is, Matrix& p)
 {
 	is >> p.width >> p.height;
+
+	if (is.peek() == EOF)
+		return is;
 
 	delete[] p.coef;
 	p.coef = new int[p.height * p.width];

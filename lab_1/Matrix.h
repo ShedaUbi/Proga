@@ -2,16 +2,9 @@
 #include <iostream>
 
 class Matrix {
-	static int count;
 
 public:
 	static int get_count();
-	static void clear_file();
-	static void clear_bin_file();
-	static std::ofstream open_file_save();
-	static std::ifstream open_file_load();
-	static std::ofstream open_file_save_bin();
-	static std::ifstream open_file_load_bin();
 
 	Matrix();
 	Matrix(int new_width, int new_height);
@@ -30,7 +23,7 @@ public:
 	void sort_lines();
 	void sort_columns();
 
-	void print(); // TODO: Remove
+	std::string to_string();
 
 
 	Matrix* operator+(Matrix b);
@@ -47,6 +40,7 @@ public:
 
 
 private:
+	static int count;
 	int height;
 	int width;
 	int* coef;

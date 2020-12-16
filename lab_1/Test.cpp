@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <ctime>
 
 //  онструктор по умолчанию
 Test::Test() {}
@@ -23,23 +24,102 @@ Matrix* Test::test_get_test_matrix()
 	return new Matrix(3, 3, test_coefs);
 }
 
+// bool Test::test_saveload_operators_mult()
+// “естирование сохранени€ и загрузки нескольких случайных матриц в файл
+// return - true, если тест пройден
+bool Test::test_saveload_operators_mult()
+{
+	srand(time(0));
+	std::ofstream ofs("cache_mult.txt", std::ios::out);
+
+	if (!ofs)
+	{
+		std::cerr << "Error: unable to write to cache_mult.txt" << std::endl;
+		return false;
+	}
+
+	const int mtx_count = 10;
+	Matrix* mtx_array[mtx_count];
+
+	for (int k = 0; k < mtx_count; k++)
+	{
+		int width = rand() % 10 + 2;
+		int height = rand() % 10 + 2;
+
+		int* coefs = new int[width * height];
+
+		for (int tc = 0; tc < width * height; tc++)
+			coefs[tc] = rand() % 256 + 1;
+
+		mtx_array[k] = new Matrix(width, height, coefs);
+
+		//std::cout << *mtx_array[k] << std::endl;
+		ofs << *mtx_array[k];
+	}
+
+	ofs.close();
+
+	std::ifstream ifs("cache_mult.txt", std::ios::in);
+
+	if (!ifs)
+	{
+		std::cerr << "Error: unable to read from cache_mult.txt" << std::endl;
+		return false;
+	}
+
+	int cur_mtx = 0;
+	while (true)
+	{
+		Matrix* test_mtrx2 = new Matrix();
+		ifs >> *test_mtrx2;
+
+		if (ifs.peek() == EOF)
+			break;
+
+		Matrix* temp_mtx = mtx_array[cur_mtx];
+
+		for (int y = 0; y < temp_mtx->get_h(); y++)
+			for (int x = 0; x < temp_mtx->get_w(); x++)
+				if (temp_mtx->get_coef(x, y) != test_mtrx2->get_coef(x, y))
+					return false;
+
+		cur_mtx++;
+		delete test_mtrx2;
+	}
+
+	ifs.close();
+
+	for (int k = 0; k < mtx_count; k++)
+		delete mtx_array[k];
+
+	return cur_mtx == mtx_count;
+}
+
 // bool Test::test_saveload_operators()
 // “естирование сохранени€ и загрузки матрицы в файл
 // return - true, если тест пройден
 bool Test::test_saveload_operators()
 {
-	Matrix::clear_file();
+	std::ofstream ofs("cache.txt", std::ios::out);
 
-	std::ofstream ofs = Matrix::open_file_save();
-	if (!ofs) return false;
+	if (!ofs)
+	{
+		std::cerr << "Error: unable to write to cache.txt" << std::endl;
+		return false;
+	}
 
 	Matrix* test_mtrx1 = this->test_get_test_matrix();
 
 	ofs << *test_mtrx1;
 	ofs.close();
 
-	std::ifstream ifs = Matrix::open_file_load();
-	if (!ifs) return false;
+	std::ifstream ifs("cache.txt", std::ios::in);
+
+	if (!ifs)
+	{
+		std::cerr << "Error: unable to read from cache.txt" << std::endl;
+		return false;
+	}
 
 	Matrix* test_mtrx2 = new Matrix();
 
@@ -50,6 +130,9 @@ bool Test::test_saveload_operators()
 		for (int x = 0; x < test_mtrx1->get_w(); x++)
 			if (test_mtrx1->get_coef(x, y) != test_mtrx2->get_coef(x, y))
 				return false;
+
+	delete test_mtrx1;
+	delete test_mtrx2;
 
 	return true;
 }
@@ -59,18 +142,19 @@ bool Test::test_saveload_operators()
 // return - true, если тест пройден
 bool Test::test_saveload_bin_operators()
 {
-	Matrix::clear_bin_file();
-
-	std::ofstream ofs = Matrix::open_file_save_bin();
-	if (!ofs) return false;
+	std::ofstream ofs("cache.dat", std::ios::binary | std::ios::out);
 
 	Matrix* test_mtrx1 = this->test_get_test_matrix();
 
 	ofs << *test_mtrx1;
 	ofs.close();
 
-	std::ifstream ifs = Matrix::open_file_load_bin();
-	if (!ifs) return false;
+	std::ifstream ifs("cache.dat", std::ios::binary | std::ios::in);
+	if (!ifs)
+	{
+		std::cerr << "Error: unable to read from cache.dat" << std::endl;
+		return false;
+	}
 
 	Matrix* test_mtrx2 = new Matrix();
 
@@ -81,6 +165,9 @@ bool Test::test_saveload_bin_operators()
 		for (int x = 0; x < test_mtrx1->get_w(); x++)
 			if (test_mtrx1->get_coef(x, y) != test_mtrx2->get_coef(x, y))
 				return false;
+
+	delete test_mtrx1;
+	delete test_mtrx2;
 
 	return true;
 }
@@ -107,6 +194,8 @@ bool Test::test_identity_matrix()
 			if (ident_matrix->get_coef(x, y) != test_coefs_real[x + y * ident_matrix->get_w()])
 				return false;
 
+	delete ident_matrix;
+
 	return true;
 }
 
@@ -132,6 +221,8 @@ bool Test::test_triangle_matrix()
 			if (tri_matrix->get_coef(x, y) != test_coefs_real[x + y * tri_matrix->get_w()])
 				return false;
 
+	delete tri_matrix;
+
 	return true;
 }
 
@@ -147,6 +238,9 @@ bool Test::test_try_constructor()
 	invalid_arr[0] = (int)nullptr;
 	Matrix* matrix2 = new Matrix(3, 3, invalid_arr);
 
+	delete matrix1;
+	delete matrix2;
+
 	return true;
 }
 
@@ -155,8 +249,7 @@ bool Test::test_try_constructor()
 // return - true, если тест пройден
 bool Test::test_try_get_coef()
 {
-	Matrix* matrix = this->test_get_test_matrix();
-	return matrix->get_coef(-1, -1) == -1;
+	return this->test_get_test_matrix()->get_coef(-1, -1) == -1;
 }
 
 // bool Test::test_try_set_coef()
@@ -164,6 +257,5 @@ bool Test::test_try_get_coef()
 // return - true, если тест пройден
 bool Test::test_try_set_coef()
 {
-	Matrix* matrix = this->test_get_test_matrix();
-	return !matrix->change_coeff(-1, -1, -1);
+	return !this->test_get_test_matrix()->change_coeff(-1, -1, -1);
 }

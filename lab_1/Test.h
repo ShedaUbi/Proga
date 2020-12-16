@@ -8,6 +8,7 @@ struct Test {
 
 	bool test_saveload_operators();
 	bool test_saveload_bin_operators();
+	bool test_saveload_operators_mult();
 
 	bool test_identity_matrix();
 	bool test_triangle_matrix();

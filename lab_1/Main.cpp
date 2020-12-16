@@ -17,6 +17,11 @@ void do_tests()
 	else
 		cout << "Save/load binary operators test: False" << endl;
 
+	if (test.test_saveload_operators_mult())
+		cout << "Save/load operators for multiple objects test: True" << endl;
+	else
+		cout << "Save/load operators for multiple objects test: False" << endl;
+
 	cout << endl;
 
 	if (test.test_identity_matrix())
