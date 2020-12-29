@@ -16,4 +16,9 @@ struct Test {
 	bool test_try_constructor();
 	bool test_try_get_coef();
 	bool test_try_set_coef();
+
+	bool test_create_list();
+	bool test_virtualization_list();
+
+	bool test_list_native();
 };

@@ -12,4 +12,6 @@ public:
 
 	void sort_lines();
 	void sort_columns();
+
+	virtual std::string to_string();
 };

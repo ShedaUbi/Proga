@@ -2,6 +2,9 @@
 #include "IdentityMatrix.h"
 #include "TriMatrix.h"
 
+#include "MatrixList.h"
+#include "MatrixList.cpp"
+
 #include "Test.h"
 
 #include <iostream>
@@ -228,7 +231,7 @@ bool Test::test_triangle_matrix()
 
 
 // bool Test::test_try_constructor()
-// Тестирования конструкции try-catch в конструкторе класса
+// Тестирование конструкции try-catch в конструкторе класса
 // return - true, если тест пройден
 bool Test::test_try_constructor()
 {
@@ -245,7 +248,7 @@ bool Test::test_try_constructor()
 }
 
 // bool Test::test_try_get_coef()
-// Тестирования конструкции try-catch в методе получения значения коэффициента матрицы
+// Тестирование конструкции try-catch в методе получения значения коэффициента матрицы
 // return - true, если тест пройден
 bool Test::test_try_get_coef()
 {
@@ -253,9 +256,96 @@ bool Test::test_try_get_coef()
 }
 
 // bool Test::test_try_set_coef()
-// Тестирования конструкции try-catch в методе установки значения коэффициента матрицы
+// Тестирование конструкции try-catch в методе установки значения коэффициента матрицы
 // return - true, если тест пройден
 bool Test::test_try_set_coef()
 {
 	return !this->test_get_test_matrix()->change_coeff(-1, -1, -1);
+}
+
+// bool Test::test_create_list()
+// Тестирование создания списка и вывода его на экран
+// return - true, если тест пройден
+bool Test::test_create_list()
+{
+	try 
+	{
+		MatrixList<Matrix>* t = new MatrixList<Matrix>;
+
+		Matrix* test_mtrx1 = this->test_get_test_matrix();
+		Matrix* test_mtrx2 = this->test_get_test_matrix();
+		test_mtrx2->change_coeff(1, 1, 100);
+	
+		t->add(*test_mtrx1);
+		t->add(*test_mtrx2);
+	
+		t->print_all();
+
+		return true;
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << "Error: " << e.what() << std::endl;
+		return false;
+	}
+}
+
+// bool Test::test_virtualization_list()
+// Тестирование виртуализации методов матриц
+// return - true, если тест пройден
+bool Test::test_virtualization_list()
+{
+	try 
+	{
+		MatrixList<Matrix>* t = new MatrixList<Matrix>;
+
+		int* test_coefs = new int[9];
+		test_coefs[0] = 3; test_coefs[1] = 2; test_coefs[2] = 1;
+		test_coefs[3] = 9; test_coefs[4] = 8; test_coefs[5] = 7;
+		test_coefs[6] = 6; test_coefs[7] = 5; test_coefs[8] = 4;
+
+		Matrix* test_mtrx1 = this->test_get_test_matrix();
+		IdentityMatrix* test_mtrx2 = new IdentityMatrix(3, 3);
+		TriMatrix* test_mtrx3 = new TriMatrix(3, 3, test_coefs, false);
+
+		//std::cout << test_mtrx1->to_string() << std::endl;
+		//std::cout << test_mtrx2->to_string() << std::endl;
+		//std::cout << test_mtrx3->to_string() << std::endl;
+
+		t->add(*test_mtrx1);
+		t->add(*test_mtrx2);
+		t->add(*test_mtrx3);
+
+		t->print_all();
+
+		return true;
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << "Error: " << e.what() << std::endl;
+		return false;
+	}
+}
+
+// bool Test::test_list_native()
+// Тестирование создания структуры данных на нативном типе данных
+// return - true, если тест пройден
+bool Test::test_list_native()
+{
+	try 
+	{
+		MatrixList<int>* t = new MatrixList<int>;
+		
+		t->add(1);
+		t->add(10);
+		t->add(-5);
+		t->add(83);
+
+		return true;
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << "Error: " << e.what() << std::endl;
+		return false;
+	}
 }

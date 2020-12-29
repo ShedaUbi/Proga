@@ -1,21 +1,22 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "TriMatrix.h"
+#include <sstream>
 
-// TriMatrix::TriMatrix() : Matrix() 
+// TriMatrix.TriMatrix() : Matrix() 
 // Вызов конструктора класса-родителя и установка значения is_upper_tri по умолчанию - true
 TriMatrix::TriMatrix() : Matrix() 
 {
 	is_upper_tri = true;
 }
 
-// TriMatrix::TriMatrix(int new_width, int new_height) : Matrix(new_width, new_height) 
+// TriMatrix.TriMatrix(int new_width, int new_height) : Matrix(new_width, new_height) 
 // Вызов конструктора класса-родителя и установка значения is_upper_tri по умолчанию - true
 TriMatrix::TriMatrix(int new_width, int new_height) : Matrix(new_width, new_height) 
 {
 	is_upper_tri = true;
 }
 
-// TriMatrix::TriMatrix(int new_width, int new_height, int* coefs, bool is_upper) : Matrix(new_width, new_height, coefs) 
+// TriMatrix.TriMatrix(int new_width, int new_height, int* coefs, bool is_upper) : Matrix(new_width, new_height, coefs) 
 // Вызов конструктора класса-родителя, установка значения is_upper_tri, обнуление лишних коэффициентов матрицы
 TriMatrix::TriMatrix(int new_width, int new_height, int* coefs, bool is_upper) : Matrix(new_width, new_height, coefs) 
 {
@@ -27,7 +28,7 @@ TriMatrix::TriMatrix(int new_width, int new_height, int* coefs, bool is_upper) :
 				this->change_coeff(x, y, 0);
 }
 
-// bool TriMatrix::change_coeff(int x, int y, int new_coef)
+// bool TriMatrix.change_coeff(int x, int y, int new_coef)
 // Перегрузка метода change_coeff класса-родителя - пресекаются попытки изменить не используемый в треугольной матрице коэффициент
 // return - false, если изменяется не-треугольный элемент, иначе - true, если установка значения успешна.
 bool TriMatrix::change_coeff(int x, int y, int new_coef)
@@ -41,7 +42,7 @@ bool TriMatrix::change_coeff(int x, int y, int new_coef)
 	return Matrix::change_coeff(x, y, new_coef);
 }
 
-// void TriMatrix::sort_columns()
+// void TriMatrix.sort_columns()
 // Перегрузка метода sort_columns класса-родителя - сортируются только используемые коэффициенты
 void TriMatrix::sort_columns()
 {
@@ -67,7 +68,7 @@ void TriMatrix::sort_columns()
 	}
 }
 
-// void TriMatrix::sort_lines()
+// void TriMatrix.sort_lines()
 // Перегрузка метода sort_lines класса-родителя - сортируются только используемые коэффициенты
 void TriMatrix::sort_lines()
 {
@@ -91,4 +92,23 @@ void TriMatrix::sort_lines()
 			this->change_coeff(cur_step, y, min);
 		}
 	}
+}
+
+// string TriMatrix.to_string()
+// Строковое представвление треугольной матрицы
+// return - как в описании
+std::string TriMatrix::to_string()
+{
+	std::ostringstream out;
+	out << "Triangle Matrix: " << this->get_w() << "x" << this->get_h() << std::endl;
+
+	for (int y = 0; y < this->get_h(); y++)
+	{
+		for (int x = 0; x < this->get_w(); x++)
+			out << this->get_coef(x, y) << ' ';
+
+		out << std::endl;
+	}
+
+	return out.str();
 }

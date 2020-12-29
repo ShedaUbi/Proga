@@ -255,10 +255,20 @@ void Matrix::print()
 
 // string Matrix.to_string()
 // Строковое представвление матрицы
+// return - как в описании
 std::string Matrix::to_string()
 {
 	std::ostringstream out;
-	out << "Matrix: " << width << "x" << height;
+	out << "Matrix: " << width << "x" << height << std::endl;
+
+	for (int y = 0; y < height; y++)
+	{
+		for (int x = 0; x < width; x++)
+			out << coef[y * width + x] << ' ';
+
+		out << std::endl;
+	}
+
 	return out.str();
 }
 

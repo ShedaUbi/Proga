@@ -50,6 +50,23 @@ void do_tests()
 		cout << "Try-catch set coefficent test: True" << endl << endl;
 	else
 		cout << "Try-catch set coefficent test: False" << endl << endl;
+
+
+	if (test.test_create_list())
+		cout << "Create matrix list test: True" << endl << endl;
+	else
+		cout << "Create matrix list test: False" << endl << endl;
+
+	if (test.test_virtualization_list())
+		cout << "Matrix virtualization test: True" << endl << endl;
+	else
+		cout << "Matrix virtualization test: False" << endl << endl;
+
+
+	if (test.test_list_native())
+		cout << "Template list class test: True" << endl << endl;
+	else
+		cout << "Template list class test: False" << endl << endl;
 }
 
 int main() 

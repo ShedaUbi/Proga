@@ -12,6 +12,8 @@ public:
 	void sort_lines();
 	void sort_columns();
 
+	virtual std::string to_string();
+
 private:
 	bool is_upper_tri;
 };

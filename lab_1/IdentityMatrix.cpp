@@ -1,5 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "IdentityMatrix.h"
+#include <sstream>
 
 // IdentityMatrix::IdentityMatrix() : Matrix() 
 // Вызов конструктора класса-родителя с изменением значения коэффициента
@@ -39,3 +40,13 @@ void IdentityMatrix::sort_columns() {}
 // void IdentityMatrix::sort_lines() {}
 // Перегрузка метода sort_lines класса-родителя - единичные матрицы не нуждаются в сортировке
 void IdentityMatrix::sort_lines() {}
+
+// string TriMatrix.to_string()
+// Строковое представвление единичной матрицы
+// return - как в описании
+std::string IdentityMatrix::to_string()
+{
+	std::ostringstream out;
+	out << "Identity Matrix: " << this->get_w() << "x" << this->get_h() << std::endl;
+	return out.str();
+}
