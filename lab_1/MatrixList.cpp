@@ -1,15 +1,19 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "MatrixList.h"
 #include <iostream>
 
-MatrixList::MatrixList() : _head() {}
+template<typename T>
+MatrixList<T>::MatrixList() : _head() {}
 
-MatrixList::~MatrixList()
+template<typename T>
+MatrixList<T>::~MatrixList()
 {
 	while (_head)
 		remove();
 }
 
-void MatrixList::add(const Matrix& t, unsigned int n)
+template<typename T>
+void MatrixList<T>::add(const T& t, unsigned int n)
 {
 	ListNode* node = new ListNode(t);
 
@@ -52,13 +56,14 @@ void MatrixList::add(const Matrix& t, unsigned int n)
 	}
 }
 
-void MatrixList::remove(unsigned int n)
+template<typename T>
+void MatrixList<T>::remove(unsigned int n)
 {
 	if (_head)
 	{
 		if(n == 0)
 		{ 
-			ListNode* new_head = _head->_next;
+			ListNode* new_head = _head->next;
 
 			delete _head;
 			_head = new_head;
@@ -84,7 +89,8 @@ void MatrixList::remove(unsigned int n)
 	}
 }
 
-Matrix MatrixList::find(int size_x, int size_y)
+template<typename T>
+T MatrixList<T>::find(int size_x, int size_y)
 {
 	ListNode* iter;
 	bool d;
@@ -93,29 +99,34 @@ Matrix MatrixList::find(int size_x, int size_y)
 		if (iter->_val.get_w() == size_x && iter->_val.get_h() == size_y)
 			return iter->_val;
 
-	return Matrix();
+	return T();
 }
 
-void MatrixList::print_all()
+template<typename T>
+void MatrixList<T>::print_all()
 {
 	ListNode* iter;
 	bool d;
 
 	for(iter = _head, d = false; !(iter == _head && d); iter = iter->_next, d = true)
+		//std::cout << iter->_val.to_string() << std::endl;
 		std::cout << iter->print() << std::endl;
 }
 
-MatrixList::ListNode* MatrixList::get_head()
+template<typename T>
+T MatrixList<T>::get_head()
 {
 	return _head;
 }
 
-typename MatrixList::ListIterator MatrixList::begin()
+template<typename T>
+typename MatrixList<T>::ListIterator MatrixList<T>::begin()
 {
 	return ListIterator(_head);
 }
 
-typename MatrixList::ListIterator MatrixList::end()
+template<typename T>
+typename MatrixList<T>::ListIterator MatrixList<T>::end()
 {
 	ListNode* nd = _head;
 	for (; nd != NULL && nd->_next != _head; nd = nd->_next);
@@ -123,7 +134,8 @@ typename MatrixList::ListIterator MatrixList::end()
 	return ListIterator(nd);
 }
 
-unsigned int MatrixList::get_size()
+template<typename T>
+unsigned int MatrixList<T>::get_size()
 {
 	if (_head == NULL)
 		return 0;
@@ -134,37 +146,4 @@ unsigned int MatrixList::get_size()
 		size++;
 
 	return size;
-}
-
-
-MatrixList::ListNode::ListNode() : _next() {};
-MatrixList::ListNode::ListNode(const Matrix& t) : _val(t), _next() {};
-
-char* MatrixList::ListNode::print()
-{
-	return this->_val.to_string();
-}
-
-
-MatrixList::ListIterator::ListIterator(ListNode* node) : _node(node) {};
-
-bool MatrixList::ListIterator::operator==(const ListIterator& other) const
-{
-	return (this == &other) ? true : (_node == other._node);
-}
-
-bool MatrixList::ListIterator::operator!=(const ListIterator& other) const
-{
-	return !operator==(other);
-}
-
-Matrix MatrixList::ListIterator::operator*()
-{
-	return _node ? _node->_val : Matrix();
-}
-
-void MatrixList::ListIterator::operator++()
-{
-	if (_node)
-		_node = _node->_next;
 }

@@ -268,7 +268,7 @@ bool Test::test_create_list()
 {
 	try 
 	{
-		MatrixList* t = new MatrixList;
+		MatrixList<Matrix>* t = new MatrixList<Matrix>;
 
 		Matrix* test_mtrx1 = this->test_get_test_matrix();
 		Matrix* test_mtrx2 = this->test_get_test_matrix();
@@ -295,7 +295,7 @@ bool Test::test_virtualization_list()
 {
 	try 
 	{
-		MatrixList* t = new MatrixList;
+		MatrixList<Matrix>* t = new MatrixList<Matrix>;
 
 		int* test_coefs = new int[9];
 		test_coefs[0] = 3; test_coefs[1] = 2; test_coefs[2] = 1;
@@ -325,3 +325,25 @@ bool Test::test_virtualization_list()
 	}
 }
 
+// bool Test::test_list_native()
+// Тестирование создания структуры данных на нативном типе данных
+// return - true, если тест пройден
+bool Test::test_list_native()
+{
+	try 
+	{
+		MatrixList<int>* t = new MatrixList<int>;
+		
+		t->add(1);
+		t->add(10);
+		t->add(-5);
+		t->add(83);
+
+		return true;
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << "Error: " << e.what() << std::endl;
+		return false;
+	}
+}

@@ -62,6 +62,12 @@ void do_tests()
 		cout << "Matrix virtualization test: True" << endl << endl;
 	else
 		cout << "Matrix virtualization test: False" << endl << endl;
+
+
+	if (test.test_list_native())
+		cout << "Template list class test: True" << endl << endl;
+	else
+		cout << "Template list class test: False" << endl << endl;
 }
 
 int main() 
