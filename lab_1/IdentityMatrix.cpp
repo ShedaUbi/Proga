@@ -44,9 +44,24 @@ void IdentityMatrix::sort_lines() {}
 // string TriMatrix.to_string()
 // Строковое представвление единичной матрицы
 // return - как в описании
-std::string IdentityMatrix::to_string()
+char* IdentityMatrix::to_string()
 {
-	std::ostringstream out;
-	out << "Identity Matrix: " << this->get_w() << "x" << this->get_h() << std::endl;
-	return out.str();
+	int size = 21 + log(this->get_w()) + log(this->get_h());
+
+	char* buffer = new char[32];
+	char* result = new char[size];
+
+	sprintf(result, "%s", "Identity Matrix: ");
+
+	sprintf(buffer, "%i", this->get_w());
+	strcat(result, buffer);
+
+	strcat(result, "x");
+
+	sprintf(buffer, "%i", this->get_h());
+	strcat(result, buffer);
+
+	strcat(result, "\n");
+
+	return result;
 }

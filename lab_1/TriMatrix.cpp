@@ -97,18 +97,45 @@ void TriMatrix::sort_lines()
 // string TriMatrix.to_string()
 // Строковое представвление треугольной матрицы
 // return - как в описании
-std::string TriMatrix::to_string()
+char* TriMatrix::to_string()
 {
-	std::ostringstream out;
-	out << "Triangle Matrix: " << this->get_w() << "x" << this->get_h() << std::endl;
+	int size = 21 + log(this->get_w()) + log(this->get_h());
+
+	for (int y = 0; y < this->get_h(); y++)
+		for (int x = 0; x < this->get_w(); x++)
+			if (this->get_coef(x, y) > 0)
+				size += log(this->get_coef(x, y)) + 1;
+			else if (this->get_coef(x, y) < 0)
+				size += log(-(this->get_coef(x, y))) + 1;
+			else
+				size += 2;
+
+	char* buffer = new char[32];
+	char* result = new char[size];
+
+	sprintf(result, "%s", "Triangle Matrix: ");
+
+	sprintf(buffer, "%i", this->get_w());
+	strcat(result, buffer);
+
+	strcat(result, "x");
+
+	sprintf(buffer, "%i", this->get_h());
+	strcat(result, buffer);
+
+	strcat(result, "\n");
 
 	for (int y = 0; y < this->get_h(); y++)
 	{
 		for (int x = 0; x < this->get_w(); x++)
-			out << this->get_coef(x, y) << ' ';
+		{
+			sprintf(buffer, "%i", this->get_coef(x, y));
+			strcat(result, buffer);
+			strcat(result, " ");
+		}
 
-		out << std::endl;
+		strcat(result, "\n");
 	}
 
-	return out.str();
+	return result;
 }

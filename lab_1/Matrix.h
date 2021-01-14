@@ -23,7 +23,7 @@ public:
 	void sort_lines();
 	void sort_columns();
 
-	virtual std::string to_string();
+	virtual char* to_string();
 
 
 	Matrix* operator+(Matrix b);

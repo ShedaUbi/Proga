@@ -145,32 +145,30 @@ bool Test::test_saveload_operators()
 // return - true, если тест пройден
 bool Test::test_saveload_bin_operators()
 {
-	std::ofstream ofs("cache.dat", std::ios::binary | std::ios::out);
+	std::ofstream ofs;
+	ofs.open("cache.bin", std::ios::binary | std::ios::out);
 
-	Matrix* test_mtrx1 = this->test_get_test_matrix();
+	Matrix test_mtrx1 = *(this->test_get_test_matrix());
 
-	ofs << *test_mtrx1;
+	ofs.write((char*)&test_mtrx1, sizeof(Matrix));
 	ofs.close();
 
-	std::ifstream ifs("cache.dat", std::ios::binary | std::ios::in);
+	std::ifstream ifs("cache.bin", std::ios::binary | std::ios::in);
 	if (!ifs)
 	{
-		std::cerr << "Error: unable to read from cache.dat" << std::endl;
+		std::cerr << "Error: unable to read from cache.bin" << std::endl;
 		return false;
 	}
 
-	Matrix* test_mtrx2 = new Matrix();
+	Matrix test_mtrx2;
 
-	ifs >> *test_mtrx2;
+	ifs.read((char*)&test_mtrx2, sizeof(Matrix));
 	ifs.close();
 
-	for (int y = 0; y < test_mtrx1->get_h(); y++)
-		for (int x = 0; x < test_mtrx1->get_w(); x++)
-			if (test_mtrx1->get_coef(x, y) != test_mtrx2->get_coef(x, y))
+	for (int y = 0; y < test_mtrx1.get_h(); y++)
+		for (int x = 0; x < test_mtrx1.get_w(); x++)
+			if (test_mtrx1.get_coef(x, y) != test_mtrx2.get_coef(x, y))
 				return false;
-
-	delete test_mtrx1;
-	delete test_mtrx2;
 
 	return true;
 }
@@ -270,7 +268,7 @@ bool Test::test_create_list()
 {
 	try 
 	{
-		MatrixList<Matrix>* t = new MatrixList<Matrix>;
+		MatrixList* t = new MatrixList;
 
 		Matrix* test_mtrx1 = this->test_get_test_matrix();
 		Matrix* test_mtrx2 = this->test_get_test_matrix();
@@ -297,7 +295,7 @@ bool Test::test_virtualization_list()
 {
 	try 
 	{
-		MatrixList<Matrix>* t = new MatrixList<Matrix>;
+		MatrixList* t = new MatrixList;
 
 		int* test_coefs = new int[9];
 		test_coefs[0] = 3; test_coefs[1] = 2; test_coefs[2] = 1;
@@ -327,25 +325,3 @@ bool Test::test_virtualization_list()
 	}
 }
 
-// bool Test::test_list_native()
-// Тестирование создания структуры данных на нативном типе данных
-// return - true, если тест пройден
-bool Test::test_list_native()
-{
-	try 
-	{
-		MatrixList<int>* t = new MatrixList<int>;
-		
-		t->add(1);
-		t->add(10);
-		t->add(-5);
-		t->add(83);
-
-		return true;
-	}
-	catch (const std::exception& e)
-	{
-		std::cout << "Error: " << e.what() << std::endl;
-		return false;
-	}
-}

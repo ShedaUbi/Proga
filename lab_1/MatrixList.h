@@ -1,6 +1,6 @@
 #pragma once
+#include "Matrix.h"
 
-template <typename T>
 class MatrixList 
 {
 private:
@@ -14,7 +14,7 @@ public:
 
 		bool operator==(const ListIterator& other) const;
 		bool operator!=(const ListIterator& other) const;
-		T operator*();
+		Matrix operator*();
 		void operator++();
 
 	private:
@@ -25,13 +25,13 @@ public:
 	MatrixList();
 	~MatrixList();
 
-	void add(const T &t, unsigned int n = 0);
+	void add(const Matrix &t, unsigned int n = 0);
 	void remove(unsigned int n = 0);
 
-	T find(int size_x, int size_y);
+	Matrix find(int size_x, int size_y);
 	void print_all();
 
-	T get_head();
+	ListNode* get_head();
 
 	ListIterator begin();
 	ListIterator end();
@@ -43,48 +43,13 @@ private:
 	{
 	public:
 		ListNode();
-		ListNode(const T& t);
+		ListNode(const Matrix& t);
 
-		T _val;
+		char* print();
+
+		Matrix _val;
 		ListNode* _next;
 	};
 
 	ListNode* _head;
 };
-
-
-template<typename T>
-MatrixList<T>::ListNode::ListNode() : _next() {};
-
-template<typename T>
-MatrixList<T>::ListNode::ListNode(const T& t) : _val(t), _next() {};
-
-
-
-template<typename T>
-MatrixList<T>::ListIterator::ListIterator(ListNode* node) : _node(node) {};
-
-template<typename T>
-bool MatrixList<T>::ListIterator::operator==(const ListIterator& other) const
-{
-	return (this == &other) ? true : (_node == other._node);
-}
-
-template<typename T>
-bool MatrixList<T>::ListIterator::operator!=(const ListIterator& other) const
-{
-	return !operator==(other);
-}
-
-template<typename T>
-T MatrixList<T>::ListIterator::operator*()
-{
-	return _node ? _node->_val : T();
-}
-
-template<typename T>
-void MatrixList<T>::ListIterator::operator++()
-{
-	if (_node)
-		_node = _node->_next;
-}

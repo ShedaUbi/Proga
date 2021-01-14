@@ -76,7 +76,7 @@ Matrix::Matrix(int new_width, int new_height, int* coefs)
 Matrix::~Matrix()
 {
 	count--;
-	delete[] coef;
+	//delete[] coef;
 }
 
 
@@ -256,20 +256,47 @@ void Matrix::print()
 // string Matrix.to_string()
 // Строковое представвление матрицы
 // return - как в описании
-std::string Matrix::to_string()
+char* Matrix::to_string()
 {
-	std::ostringstream out;
-	out << "Matrix: " << width << "x" << height << std::endl;
+	int size = 12 + log(width) + log(height);
+	
+	for (int y = 0; y < height; y++)
+		for (int x = 0; x < width; x++)
+			if (coef[y * width + x] > 0)
+				size += log(coef[y * width + x]) + 1;
+			else if (coef[y * width + x] < 0)
+				size += log(-coef[y * width + x]) + 1;
+			else
+				size += 2;
+
+	char* buffer = new char[32];
+	char* result = new char[size];
+
+	sprintf(result, "%s", "Matrix: ");
+
+	sprintf(buffer, "%i", width);
+	strcat(result, buffer);
+
+	strcat(result, "x");
+
+	sprintf(buffer, "%i", height);
+	strcat(result, buffer);
+
+	strcat(result, "\n");
 
 	for (int y = 0; y < height; y++)
 	{
 		for (int x = 0; x < width; x++)
-			out << coef[y * width + x] << ' ';
+		{
+			sprintf(buffer, "%i", coef[y * width + x]);
+			strcat(result, buffer);
+			strcat(result, " ");
+		}
 
-		out << std::endl;
+		strcat(result, "\n");
 	}
-
-	return out.str();
+	
+	return result;
 }
 
 // Matrix* Matrix::operator+(Matrix b)
