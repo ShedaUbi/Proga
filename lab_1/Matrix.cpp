@@ -272,17 +272,8 @@ char* Matrix::to_string()
 	char* buffer = new char[32];
 	char* result = new char[size];
 
-	sprintf(result, "%s", "Matrix: ");
-
-	sprintf(buffer, "%i", width);
-	strcat(result, buffer);
-
-	strcat(result, "x");
-
-	sprintf(buffer, "%i", height);
-	strcat(result, buffer);
-
-	strcat(result, "\n");
+	sprintf(result, "Matrix: %ix%i\n", width, height);
+	sprintf(buffer, "");
 
 	for (int y = 0; y < height; y++)
 	{
@@ -434,4 +425,105 @@ std::ifstream& operator>>(std::ifstream& is, Matrix& p)
 		is >> p.coef[i];
 	
 	return is;
+}
+
+// bool Matrix.save_to_file(char* filename)
+// Сохраняет матрицу в файл
+// args:
+// - const char* filename - имя файла, в который следует сохранить матрицу
+// return - false, если не удалось сохранить матрицу с указанный файл - true иначе.
+bool Matrix::save_to_file(const char* filename)
+{
+	try {
+		std::ofstream ofs(filename, std::ios::out);
+
+		if (!ofs)
+			throw std::runtime_error("Error: unable to save matrix");
+
+		ofs << *this;
+		ofs.close();
+
+		return true;
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << "Error: " << e.what() << std::endl;
+		return false;
+	}
+}
+
+// bool Matrix.load_from_file(char* filename)
+// Загружает матрицу из файла
+// args:
+// - const char* filename - имя файла, из которого следует загрузить матрицу
+// return - false, если не удалось загрузить матрицу из указанного файла - true иначе.
+bool Matrix::load_from_file(const char* filename)
+{
+	try {
+		std::ifstream ifs(filename, std::ios::in);
+
+		if (!ifs)
+			throw std::runtime_error("Error: unable to load matrix");
+
+		ifs >> *this;
+		ifs.close();
+
+		return true;
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << "Error: " << e.what() << std::endl;
+		return false;
+	}
+}
+
+// bool Matrix.save_to_bin_file(char* filename)
+// Сохраняет матрицу в бинарный файл
+// args:
+// - const char* filename - имя файла, в который следует сохранить матрицу
+// return - false, если не удалось сохранить матрицу с указанный файл - true иначе.
+bool Matrix::save_to_bin_file(const char* filename)
+{
+	try {
+		std::ofstream ofs;
+		ofs.open(filename, std::ios::binary | std::ios::out);
+
+		if (!ofs)
+			throw std::runtime_error("Error: unable to save matrix");
+
+		ofs.write((char*)this, sizeof(Matrix));
+		ofs.close();
+
+		return true;
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << "Error: " << e.what() << std::endl;
+		return false;
+	}
+}
+
+// bool Matrix.load_from_bin_file(char* filename)
+// Загружает матрицу из бинарного файла
+// args:
+// - const char* filename - имя файла, из которого следует загрузить матрицу
+// return - false, если не удалось загрузить матрицу из указанного файла - true иначе.
+bool Matrix::load_from_bin_file(const char* filename)
+{
+	try {
+		std::ifstream ifs("cache.bin", std::ios::binary | std::ios::in);
+
+		if (!ifs)
+			throw std::runtime_error("Error: unable to load matrix");
+
+		ifs.read((char*)this, sizeof(Matrix));
+		ifs.close();
+
+		return true;
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << "Error: " << e.what() << std::endl;
+		return false;
+	}
 }

@@ -103,31 +103,13 @@ bool Test::test_saveload_operators_mult()
 // return - true, если тест пройден
 bool Test::test_saveload_operators()
 {
-	std::ofstream ofs("cache.txt", std::ios::out);
-
-	if (!ofs)
-	{
-		std::cerr << "Error: unable to write to cache.txt" << std::endl;
-		return false;
-	}
-
 	Matrix* test_mtrx1 = this->test_get_test_matrix();
-
-	ofs << *test_mtrx1;
-	ofs.close();
-
-	std::ifstream ifs("cache.txt", std::ios::in);
-
-	if (!ifs)
-	{
-		std::cerr << "Error: unable to read from cache.txt" << std::endl;
+	if (!test_mtrx1->save_to_file("cache.txt"))
 		return false;
-	}
 
 	Matrix* test_mtrx2 = new Matrix();
-
-	ifs >> *test_mtrx2;
-	ifs.close();
+	if (!test_mtrx2->load_from_file("cache.txt"))
+		return false;
 
 	for (int y = 0; y < test_mtrx1->get_h(); y++)
 		for (int x = 0; x < test_mtrx1->get_w(); x++)
@@ -145,29 +127,17 @@ bool Test::test_saveload_operators()
 // return - true, если тест пройден
 bool Test::test_saveload_bin_operators()
 {
-	std::ofstream ofs;
-	ofs.open("cache.bin", std::ios::binary | std::ios::out);
-
-	Matrix test_mtrx1 = *(this->test_get_test_matrix());
-
-	ofs.write((char*)&test_mtrx1, sizeof(Matrix));
-	ofs.close();
-
-	std::ifstream ifs("cache.bin", std::ios::binary | std::ios::in);
-	if (!ifs)
-	{
-		std::cerr << "Error: unable to read from cache.bin" << std::endl;
+	Matrix* test_mtrx1 = this->test_get_test_matrix();
+	if (!test_mtrx1->save_to_bin_file("cache.bin"))
 		return false;
-	}
 
-	Matrix test_mtrx2;
+	Matrix* test_mtrx2 = new Matrix();
+	if (!test_mtrx2->load_from_bin_file("cache.bin"))
+		return false;
 
-	ifs.read((char*)&test_mtrx2, sizeof(Matrix));
-	ifs.close();
-
-	for (int y = 0; y < test_mtrx1.get_h(); y++)
-		for (int x = 0; x < test_mtrx1.get_w(); x++)
-			if (test_mtrx1.get_coef(x, y) != test_mtrx2.get_coef(x, y))
+	for (int y = 0; y < test_mtrx1->get_h(); y++)
+		for (int x = 0; x < test_mtrx1->get_w(); x++)
+			if (test_mtrx1->get_coef(x, y) != test_mtrx2->get_coef(x, y))
 				return false;
 
 	return true;

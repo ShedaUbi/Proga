@@ -25,6 +25,11 @@ public:
 
 	virtual char* to_string();
 
+	bool save_to_file(const char* filename);
+	bool load_from_file(const char* filename);
+
+	bool save_to_bin_file(const char* filename);
+	bool load_from_bin_file(const char* filename);
 
 	Matrix* operator+(Matrix b);
 	Matrix* operator-(Matrix b);

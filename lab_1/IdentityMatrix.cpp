@@ -51,17 +51,6 @@ char* IdentityMatrix::to_string()
 	char* buffer = new char[32];
 	char* result = new char[size];
 
-	sprintf(result, "%s", "Identity Matrix: ");
-
-	sprintf(buffer, "%i", this->get_w());
-	strcat(result, buffer);
-
-	strcat(result, "x");
-
-	sprintf(buffer, "%i", this->get_h());
-	strcat(result, buffer);
-
-	strcat(result, "\n");
-
+	sprintf(result, "Identity Matrix: %ix%i\n", this->get_w(), this->get_h());
 	return result;
 }

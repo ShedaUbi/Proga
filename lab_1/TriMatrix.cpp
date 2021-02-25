@@ -113,18 +113,9 @@ char* TriMatrix::to_string()
 	char* buffer = new char[32];
 	char* result = new char[size];
 
-	sprintf(result, "%s", "Triangle Matrix: ");
-
-	sprintf(buffer, "%i", this->get_w());
-	strcat(result, buffer);
-
-	strcat(result, "x");
-
-	sprintf(buffer, "%i", this->get_h());
-	strcat(result, buffer);
-
-	strcat(result, "\n");
-
+	sprintf(result, "Triangle Matrix: %ix%i\n", this->get_w(), this->get_h());
+	sprintf(buffer, "");
+	
 	for (int y = 0; y < this->get_h(); y++)
 	{
 		for (int x = 0; x < this->get_w(); x++)
